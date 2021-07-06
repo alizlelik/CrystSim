@@ -333,14 +333,14 @@ def fcrystal_cdf(rho_inst, F, G, tmaxC, n_test=1e5, N_sphs=10000, verbose=False)
 
     return ts3, ks3, vols_arr, N_thrm, N_inst, VV
 
-def seeds_aniso(Nsph, T_start, cr, t_max):
+def seeds_aniso(Nsph, T_start, cr, t_max, T_peak):
     """generate Nsph seeds with a Laplace distribution
     T_szart: starting temperature of crystallization [K]
     cr: cooling rate [K/s]
     t_max: duration of crystallization [s]
     returns Nsph(int), t0s_thrm(array)-array of birthtimes"""
 
-    T_peak = 386 #peak crystallization temperature [K]
+    #T_peak = 386 #peak crystallization temperature [K]
     if Nsph>10:
         
         time_peak = (T_start-T_peak)*60./cr
@@ -377,7 +377,7 @@ def seeds_aniso(Nsph, T_start, cr, t_max):
     
     return t0s_thrm, Nsph
 
-def fcrystal_cdf_aniso(rho_inst, F, T_0, Cr, HLparams, tmaxC, n_test=1e5, N_sphs=10000, verbose=False): 
+def fcrystal_cdf_aniso(rho_inst, F, T_0, Cr, HLparams, tmaxC, Tcp, n_test=1e5, N_sphs=10000, verbose=False): 
     """
     rho_inst: density of instantly born sphs
     LL: length of computational cube in alu (arbitrary length units)
@@ -408,9 +408,9 @@ def fcrystal_cdf_aniso(rho_inst, F, T_0, Cr, HLparams, tmaxC, n_test=1e5, N_sphs
               \ /               
                Y    """
         if tmax>tmaxC: #limits the birth of seeds to when there is ongoing crystallization
-            t0s_thrm, N_thrm0 = seeds_aniso(N_thrm0, T_0, Cr, tmaxC)
+            t0s_thrm, N_thrm0 = seeds_aniso(N_thrm0, T_0, Cr, tmaxC, Tcp)
         else: 
-            t0s_thrm, N_thrm0 = seeds_aniso(N_thrm0, T_0, Cr, tmax)
+            t0s_thrm, N_thrm0 = seeds_aniso(N_thrm0, T_0, Cr, tmax, Tcp)
         t0s = np.concatenate((np.zeros(N_inst), t0s_thrm))
         
         """ / \     
