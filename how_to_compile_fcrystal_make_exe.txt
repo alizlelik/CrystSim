@@ -1,0 +1,92 @@
+On linux
+
+0. Install gfortran
+	`sudo apt install gfortran`
+
+1. Install anaconda
+	a. get anaconda `curl -O https://repo.anaconda.com/archive/Anaconda3-2019.07-Linux-x86_64.sh`
+	b. install anaconda `bash Anaconda3-2019.07-Linux-x86_64.sh`
+	c. Answer "yes" to the question "Do you wish the installer to initialize Anaconda3 by running conda init?"                  
+
+2. create a new environment
+	a. conda create --name myenv
+	b. conda activate myenv
+	c. conda install numpy scipy matplotlib jupyter
+
+3. Now you should have f2py. Check it!
+	`which f2py` should give something like user_home_folder/anaconda3/envs/myenv/bin/f2py
+
+4. Compile fcrystal.f90
+	a. Go to the directory where fcrystal.f90 resides.
+	b. `f2py -c -m fcrystal fcrystal.f90`
+After executing this, I have a fresh "fcrystal.cpython-37m-x86_64-linux-gnu.so" file. 
+Yours might have slightly different name, but it shoud start with fcrystal and should
+be created freshly. Check the creation date with `ls -lh`
+
+5. Test it
+	a. open jupyter from the same terminal `jupyter notebook`
+ 	   In case no broswer opens, open it manually by copying the given web addrress.
+	b. open the test.ipynb file from jupyter
+	c. Run the first cell.
+
+For later use always open terminal and execute `conda antivate myenv`, then `jupyter notebook`.
+
+
+To make an executable:
+
+0. Make sure your code can be compiled into an executable. 
+	a. include a from IPython import get_ipython statement in your code
+	b. get rid of all %matplotlib inline (and similar) and also any commands that print non-unicode characters to console (graphs, etc)
+	c. make sure all necessary libraries are in the folder you're working in and all packages are installed
+
+1. Install nbconvert if you haven't yet	(pip install nbconvert)
+
+2. Make a python script .py out of your ipynb file with jupyter nbconvert --to script CrystSimGUI.ipynb
+
+3. Install Pyinstaller (pip install pyinstaller)
+
+4. Build the executable
+	a. you will probably need to downgrade your PyQt. version 5.13.3 works for sure (pip install --user PyQt5==5.15.3)
+	b. pyinstaller --onefile CrystSimGUI.py
+	c. you will find your executable in a dist folder created in the folder you were working in
+
+
+------------------------------------------------------------------------------------------------
+
+
+On windows
+
+- Install anaconda, and necessary packages (numpy, scipy, matplotlib, jupyter, ...)
+
+- Install MinGW
+	- MinGW-64 if anaconda is 64 bit (http://sourceforge.net/projects/mingw-w64/files/Toolchains%20targetting%20Win32/Personal%20Builds/mingw-builds/installer/mingw-w64-install.exe/download)
+		- Architecture: x86_64
+		- Other options remain the default
+	- or MinGW32 if anaconda installation is 32 bit 
+
+- Setup environment variables
+	- create "C_INCLUDE_PATH" = path_to_mingw_install\include
+		- For example on my computer:
+		  C:\mingw-w64\x86_64-8.1.0-posix-seh-rt_v6-rev0\mingw64\include
+	- append to "Path" path_to_mingw_install\bin
+		- For example on my computer:
+		  C:\mingw-w64\x86_64-8.1.0-posix-seh-rt_v6-rev0\mingw64\bin
+
+- Open Anaconda terminal
+	python anaconda_path\Scripts\f2py.py -c --fcompiler=gnu95 --compiler=mingw32 -m fcrystal fcrystal.f90
+	On my computer: python c:\Users\Lenovo\Anaconda3\Scripts\f2py.py -c --fcompiler=gnu95 --compiler=mingw32 -m fcrystal fcrystal.f90
+	(note: on later versions of anaconda this may be f2py-script.py or f2py2e.py)
+	if you get an error like unable to use mingw32 compiler in nt environment, try: python setup.py build --compiler=gcc
+	(note: even if you have a 64-bit installation, with mingw64 this isn't likely to work)
+
+- Jupyter notebook works from here on, you can open it with jupyter notebook in your environment
+
+Making an executable:
+
+- jupyter nbconvert --to script CrystSimGUI.ipynb (create a .py script)
+
+Important note: make an environment with python 2.17.7. it's possible this works in Python3, but the GUI includes elements that are deprecated in 3.3.
+On the other hand, this has slightly reduced functionality compared to the GUI you get when running the script or 
+
+
+
