@@ -198,7 +198,7 @@ class PCrystal:
         self.k_current = np.append(self.k_current, np.sum(self.V) / float(self.N3))
 
 
-#ezt nem használja!!!!
+#ezt nem !!!!
 def mc_cdf(N_seeds, LL, n_rnd_pos, G, mode="i", F=0, n_rnd_loop=1):
     """
     Calculates the conversion curve of instantaneous nucleation with calculating at random test positions the crystallization time.
@@ -249,7 +249,7 @@ def mc_cdf(N_seeds, LL, n_rnd_pos, G, mode="i", F=0, n_rnd_loop=1):
     return (t_sorted, np.arange(len(t_sorted)) / (n_rnd_pos * n_rnd_loop - 1.))
 
 
-def fcrystal_cdf(rho_inst, F, G, tmaxC, n_test=1e5, N_sphs=10000, verbose=False): #itt bekért paraméterek
+def fcrystal_cdf(rho_inst, F, G, tmaxC, n_test=1e5, N_sphs=10000, verbose=False): 
     """
     rho_inst: density of instantly born sphs
     LL: length of computational cube in alu (arbitrary length units)
@@ -268,7 +268,7 @@ def fcrystal_cdf(rho_inst, F, G, tmaxC, n_test=1e5, N_sphs=10000, verbose=False)
     VV = N_inst / rho_inst  # computational volume
     LL = VV ** (1. / 3.)
     rho_thrm0 = 0.01 / VV  # N_thrm / VV, with N_thrm << 1
-    tmax = rho_thrm0 / F #tmax nem Gfüggő!!!!
+    tmax = rho_thrm0 / F #tmax nem ~G!!!!
    # if verbose:
         #print("N_thrm0   N_inst    LL        tmax")
     while 1:
@@ -344,7 +344,7 @@ def seeds_aniso(Nsph, T_start, cr, t_max, T_peak):
     if Nsph>10:
         
         time_peak = (T_start-T_peak)*60./cr
-        loc, scale = time_peak, 15. #meredekség !
+        loc, scale = time_peak, 15. #slope !
 
         sorted_time = np.random.laplace(loc, scale, int(Nsph/5.)) #generate NSph/5 (has to be less than Nsph for later adjustments) temperatures with the correct distribution
         sorted_time = sorted_time[(sorted_time<=t_max)&(sorted_time>=0)] #select those that are within the crystallization time range
@@ -371,7 +371,7 @@ def seeds_aniso(Nsph, T_start, cr, t_max, T_peak):
 
             t0s_thrm = np.concatenate((t0s_thrm, sorted_time))
             t0s_thrm = fcrystal.msort(t0s_thrm)
-            Nsph = np.size(t0s_thrm) #ezért nem működött, valahogy itt nem jó méretű volt az Nsph de amúgy nem tudom miért?
+            Nsph = np.size(t0s_thrm) #Nsph size ????
     else:
         t0s_thrm = fcrystal.msort(np.random.rand(Nsph) * t_max)
     

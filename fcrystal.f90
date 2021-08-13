@@ -79,7 +79,7 @@ subroutine sp_seeds_aniso(n_new_seeds, new_centers,  new_t0s, &
   real, intent(in) :: T_0, Cr
   real, intent(in) :: r_min
   
-  real, dimension(2), intent(in) :: params
+  real, dimension(6), intent(in) :: params
   
   integer, intent(out) :: n_seeds
   real, dimension(n_new_seeds), intent(out) :: t0s
@@ -241,7 +241,7 @@ subroutine sr_cdf2_aniso(n_seeds, centers, t0s, LL, T_0, Cr, tmax, &
   real, dimension(n_seeds, 3), intent(in) :: centers
   real, dimension(n_seeds), intent(in) :: t0s
   real, intent(in) :: LL, T_0, Cr, tmax
-  real, dimension(2), intent(in) :: params
+  real, dimension(6), intent(in) :: params
   real, dimension(n_rnd_pos), intent(out) :: t_conv
   real, dimension(n_seeds,2), intent(out) :: vols
   
@@ -441,7 +441,7 @@ end subroutine cubic
 
 subroutine HL_calc_ido(T0, ido, Cr, params, G)
     real, intent(in) :: ido, T0, Cr
-    real, dimension(2), intent(in) :: params
+    real, dimension(6), intent(in) :: params
     real, intent(out) :: G
     real :: G0, U, Tg, T0m, KG, Tref
     real :: T1, T2, T3, A1, A2, A3, A4, T
@@ -453,12 +453,12 @@ subroutine HL_calc_ido(T0, ido, Cr, params, G)
       ! ido: the time at which we want to know G
       !returns G: growth speed [m/s]
 
-    G0=params(1)
-    U=755 
-    Tg=263.15 
-    Tref=30.0 
-    T0m=481.15 
-    KG=params(2) 
+    G0=params(1) 
+    U=params(3) 
+    Tg=params(4) 
+    Tref=params(5) 
+    T0m=params(6) 
+    KG=params(2)  
     
     T1 = -T0+Tg-Tref
     T2 = T0m+T0
@@ -479,7 +479,7 @@ end subroutine HL_calc_ido
 
 subroutine HL_calc(T, params, G)
     real, intent(in) :: T
-    real, dimension(2), intent(in) :: params
+    real, dimension(6), intent(in) :: params
     real, intent(out) :: G
     real :: G0, U, Tg, T0m, KG, Tref
     !calculates G at a given temperature from the Hoffmann-Lauritzen equation
@@ -487,11 +487,11 @@ subroutine HL_calc(T, params, G)
     !T: temeprature [K]
     !returns G: growth speed [m/s]
 
-    G0=params(1)
-    U=755 
-    Tg=263.15 
-    Tref=30.0 
-    T0m=481.15 
+    G0=params(1) 
+    U=params(3) 
+    Tg=params(4) 
+    Tref=params(5) 
+    T0m=params(6) 
     KG=params(2) 
     
     G=G0*exp(-U/(T-Tg+Tref))*exp(KG*(T0m**2)*(T0m+T)/(2*(T**2)*(T0m-T)))
@@ -499,9 +499,9 @@ subroutine HL_calc(T, params, G)
 end subroutine HL_calc
 
 
-subroutine G_elso(T0, Cr, params, eredmeny)
+subroutine G_elso(T0, Cr, params, firstderivate)
     real, intent(in) :: T0, Cr
-    real, dimension(2), intent(in) :: params
+    real, dimension(6), intent(in) :: params
     real, intent(out) :: firstderivate
     real :: G0, U, Tg, T0m, KG, Tref
     real :: T1, T2, T3, A1, A2, A3, A4
@@ -512,11 +512,11 @@ subroutine G_elso(T0, Cr, params, eredmeny)
       ! returns: firstderivate
 
     G0=params(1) 
-    U=755 
-    Tg=263.15 
-    Tref=30.0 
-    T0m=481.15 
-    KG=params(2) 
+    U=params(3) 
+    Tg=params(4) 
+    Tref=params(5) 
+    T0m=params(6) 
+    KG=params(2)  
     
     T1 = -T0+Tg-Tref
     T2 = T0m+T0
@@ -531,9 +531,9 @@ subroutine G_elso(T0, Cr, params, eredmeny)
 end subroutine G_elso
 
 
-subroutine G_masodik(T0, Cr, params, eredmeny)
+subroutine G_masodik(T0, Cr, params, secondderivate)
     real, intent(in) :: T0, Cr
-    real, dimension(2), intent(in) :: params
+    real, dimension(6), intent(in) :: params
     real, intent(out) :: secondderivate
     real :: G0, U, Tg, T0m, KG, Tref
     real :: T1, T2, T3, A1, A2, A3, A4
@@ -545,11 +545,11 @@ subroutine G_masodik(T0, Cr, params, eredmeny)
       ! returns: secondderivate
 
     G0=params(1) 
-    U=755 
-    Tg=263.15 
-    Tref=30.0 
-    T0m=481.15 
-    KG=params(2) 
+    U=params(3) 
+    Tg=params(4) 
+    Tref=params(5) 
+    T0m=params(6) 
+    KG=params(2)  
     
     T1 = -T0+Tg-Tref
 
@@ -571,7 +571,7 @@ end subroutine G_masodik
 
 subroutine G_harmadik(T0, Cr, params, eredmeny)
     real, intent(in) :: T0, Cr
-    real, dimension(2), intent(in) :: params
+    real, dimension(6), intent(in) :: params
     real, intent(out) :: eredmeny
     real :: G0, U, Tg, T0m, KG, Tref
     real :: T1, T2, T3, A1, A2, A3, A4
@@ -579,10 +579,10 @@ subroutine G_harmadik(T0, Cr, params, eredmeny)
     !G harmadik deriváltja
 
     G0=params(1) 
-    U=755 
-    Tg=263.15 
-    Tref=30.0 
-    T0m=481.15 
+    U=params(3) 
+    Tg=params(4) 
+    Tref=params(5) 
+    T0m=params(6) 
     KG=params(2)  
     
     T1 = -T0+Tg-Tref
@@ -605,7 +605,7 @@ end subroutine G_harmadik
 subroutine time_calc(d, t0, T_0, Cr, params, g00, t1) 
     real, intent(in) :: d, t0, T_0, Cr
     real, dimension(3), intent(in) :: g00 !T0=0 esetre
-    real, dimension(2), intent(in) :: params
+    real, dimension(6), intent(in) :: params
     real, intent(out) :: t1 
     real :: G0, G1, G2, dd
     !calculates how many seconds it takes for the crystal to grow d distance
@@ -638,7 +638,7 @@ end subroutine time_calc
 
 subroutine dist_calc(t1, t0, T_0, Cr, params, d)
     real, intent(in) :: t1, t0, T_0, Cr
-    real, dimension(2), intent(in) :: params
+    real, dimension(6), intent(in) :: params
     real, intent(out) :: d
     real :: G0, G1, G2
     !calculates how much the crystal grows in t1 seconds starting from t0 time
