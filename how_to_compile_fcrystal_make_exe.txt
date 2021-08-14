@@ -38,6 +38,8 @@ To make an executable:
 	a. include a from IPython import get_ipython statement in your code
 	b. get rid of all %matplotlib inline (and similar) and also any commands that print non-unicode characters to console (graphs, etc)
 	c. make sure all necessary libraries are in the folder you're working in and all packages are installed
+	d. including media files is problematic. if you don't necessarily need them, then comment out all lines importing and using images (background images...), etc.
+		if you really need them, there is an instruction at the end
 
 1. Install nbconvert if you haven't yet	(pip install nbconvert)
 
@@ -49,6 +51,33 @@ To make an executable:
 	a. you will probably need to downgrade your PyQt. version 5.13.3 works for sure (pip install --user PyQt5==5.15.3)
 	b. pyinstaller --onefile CrystSimGUI.py
 	c. you will find your executable in a dist folder created in the folder you were working in
+
+
+
+If you need the media files:
+
+1. include this in your code: 
+	import os
+	def resource_path(relative_path):
+    		base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
+    		return os.path.join(base_path, relative_path)
+from here on jupyter notebook won't be able to run your script 
+
+2. import images(etc...) this way:
+	image_path = resource_path("picture_name.png")
+	background_image=tk.PhotoImage(file = image_path)
+
+3. do these like you normally would:
+	a. jupyter nbconvert --to script CrystSimGUI.ipynb 
+	b. pyinstaller --onefile CrystSimGUI.py 
+
+4. open the .spec file
+	add 'a.datas += [('picture_name.png', '/home/path/to/picture/picture_name.png', 'DATA')]' for each media file, before the line starting with "pyz = ..."
+
+5. pyinstaller --onefile CrystSimGUI.spec
+
+
+important: tkinter can't handle any file format, for images .gif is recommended (.png probably also works)
 
 
 ------------------------------------------------------------------------------------------------
@@ -83,10 +112,28 @@ On windows
 
 Making an executable:
 
+- Make sure your code can be compiled into an executable. 
+	a. include a from IPython import get_ipython statement in your code
+	b. get rid of all %matplotlib inline (and similar) and also any commands that print non-unicode characters to console (graphs, etc)
+	c. make sure all necessary libraries are in the folder you're working in and all packages are installed
+	d. including media files is problematic. if you don't necessarily need them, then comment out all lines importing and using images (background images...), etc.
+		if you really need them, the instructions for Linux on this matter are the exact same here
+
+
 - jupyter nbconvert --to script CrystSimGUI.ipynb (create a .py script)
 
 Important note: make an environment with python 2.17.7. it's possible this works in Python3, but the GUI includes elements that are deprecated in 3.3.
-On the other hand, this has slightly reduced functionality compared to the GUI you get when running the script or 
+On the other hand, this has slightly reduced functionality compared to the GUI you get when running the script or using Linux(/WSL) (there a CrystSimGUIWin.py included which has workarounds for some of those problems)
 
 
+- install pip, wheel and setuptools (you probably already have them, but in case not...)
 
+- download a wheel file for PyQt4 from here: https://www.lfd.uci.edu/~gohlke/pythonlibs/#pyqt4
+	- for me, on a 64-bit Anaconda install PyQt4‑4.11.4‑cp27‑cp27m‑win_amd64.whl  was the version that worked
+	- pip install c:\Users\Your_User\Downloads\PyQt4‑4.11.4‑cp27‑cp27m‑win_amd64.whl (or whatever the path is for you)
+	- you may need to remove the PyQt5 you had before, this downgrade is necessary bc Python 2.7 and PyQt5 aren't compatible
+
+- download pyinstaller with conda install pyinstaller
+
+- pyinstaller --onefile CrystSimGUI.py
+	- your .exe will be in a dist folder. it's supposed to be fully portable
