@@ -3,6 +3,7 @@
 windows .exe executable: https://drive.google.com/file/d/1cKOnNwqtO5fDJ8S76J1EcSG7kXKKireo/view?usp=sharing
 
 install:
+
     1.: install Anaconda (https://www.anaconda.com/products/individual#windows)
     
     2.: open Anaconda prompt and create a new environment with 'conda create --name myenv python=2.7.17 scipy matplotlib numpy'
