@@ -4,7 +4,7 @@
 # In[1]:
 
 
-from IPython import get_ipython
+#from IPython import get_ipython
 import numpy as np
 
 #import matplotlib
