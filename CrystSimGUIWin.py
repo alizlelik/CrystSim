@@ -7,7 +7,7 @@
 #from IPython import get_ipython
 import numpy as np
 
-#import matplotlib
+import matplotlib
 from matplotlib import pyplot as plt
 import sys
 import os
@@ -16,7 +16,7 @@ from scipy.optimize import least_squares, curve_fit
 #matplotlib.use("TkAgg")
 from matplotlib.backends.backend_tkagg import (
     FigureCanvasTkAgg, NavigationToolbar2Tk)
-from matplotlib.figure import Figure
+#from matplotlib.figure import Figure
 
 # append pcrystal2 dir to path, if not in the same directory
 # sys.path.append('')
@@ -562,10 +562,6 @@ def dataFit_window():
     
     datafitWindow.mainloop()
 
-
-# In[5]:
-
-
 import tkinter as tk
 from tkinter import font
 import tkinter.scrolledtext as st
@@ -953,7 +949,7 @@ def plot_conversioninput(T_st, cr):
     frame1=tk.Frame(frame, bg="#ffffff", bd=5)
     frame1.place(relx=0.32, rely=0.15, relwidth=0.33, relheight=0.55, anchor="nw")
         
-    fig = Figure(figsize = (5, 5), dpi = 100) 
+    fig = plt.figure(figsize = (5, 5), dpi = 100) 
     plot1 = fig.add_subplot(111) 
     plot1.plot(t_temp[inds]*60,k_temp[inds]/100,label = 'measured')
     plot3 = plot1.twinx()
@@ -1111,7 +1107,7 @@ def plot_sph(file_name):
 
 
 
-            fig2 = Figure(figsize = (5, 5), dpi = 100) #kirajzolja a méreteloszlást
+            fig2 = plt.figure(figsize = (5, 5), dpi = 100) #kirajzolja a méreteloszlást
             plot2 = fig2.add_subplot(111) 
             if isSeparate.get()==True:
                 plot2.hist([sph_true_list_inst, sph_true_list_sp], bins=100, color = ["orange", "skyblue"], label = ['instant', 'continuous'], density=False) #csak a nem 0 szferolitméreteket ábrázolja
@@ -1855,24 +1851,3 @@ label_cr.destroy() #ez azért kell, hogy a label_cr-re legyen reference de az ex
 
 
 root.mainloop()
-
-
-# ### 
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
