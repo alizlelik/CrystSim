@@ -23,7 +23,11 @@ from matplotlib.figure import Figure
 import pcrystal2, pcrystal2_mod
 
 
-# In[2]:
+from math import pi, exp
+import scipy as sp
+
+import mie_aniso
+
 
 
 def resource_path(relative_path):
@@ -76,16 +80,16 @@ def CreateToolTip(widget, text):
 
     
     
-def DIYmdestroy():
+""""def DIYmdestroy():
     global DIYmWindow, firstError
     
     DIYmWindow.grab_release()
     if firstError == True:
         if DIYmWindow.winfo_exists():
-            DIYmWindow.destroy()
+            DIYmWindow.destroy()""""
             
     
-def DIYmessage(titletext, text):
+""""def DIYmessage(titletext, text):
     global DIYmWindow, firstError
     
     if firstError == True:
@@ -103,20 +107,9 @@ def DIYmessage(titletext, text):
     DIYmlabel.place(relx=0.01, rely=0, relwidth=0.99, relheight=0.5)
     
     DIYmOKbutton = tk.Button(DIYmframe, text="OK", bg="#778899", font=("Times", 16), command=lambda: DIYmdestroy(), fg='black')
-    DIYmOKbutton.place(relx=0.375, rely=0.675, relwidth=0.25, relheight=0.25)
-    
-    
-    
+    DIYmOKbutton.place(relx=0.375, rely=0.675, relwidth=0.25, relheight=0.25)""""
     
 
-
-# In[3]:
-
-
-from math import pi, exp
-import scipy as sp
-
-import mie_aniso
 
 def validate(string): #checks for only float values
     regex = re.compile(r"(\+|\-)?.[0-9.]*$")
@@ -152,7 +145,7 @@ def test_function(entry,entry2,entry3,entry4,entry5):
     global Hlabel6, Hlabel7, hazeWindow
     
     if float(entry2)<=0:
-        DIYmessage("Error!", "Spherulite size is invalid")
+        tk.messagebox.showerror("Error!", "Spherulite size is invalid")
     else:
         r0 = float(entry2) # radius in micron
         dn = float(entry5) # Birefringence
@@ -380,13 +373,13 @@ def DFloadtxt():
         try:
             data_input = np.loadtxt(DFfilename,skiprows=1)
         except (ValueError, TypeError) as ee:
-            DIYmessage("Error!", "Cannot read some data from text file")
+            tk.messagebox.showerror("Error!", "Cannot read some data from text file")
         else:
             try:
                 T_arr=data_input[:,0]
                 G_arr=data_input[:,1]
             except IndexError:
-                DIYmessage("Error!", "Cannot read data from text file")
+                tk.messagebox.showerror("Error!", "Cannot read data from text file")
             else:
                 DF_T_entry1.destroy()
                 DF_T_entry2.destroy()
@@ -412,7 +405,7 @@ def DFloadtxt():
                 DF_Gtext_area.configure(state='disabled')
                 isTxt = True
     except (UnicodeDecodeError, OSError) as eeee:
-        DIYmessage("Error!", "Text file is invalid")
+        tk.messagebox.showerror("Error!", "Text file is invalid")
         
             
             
@@ -481,11 +474,11 @@ def dataFit():
                     format(HL_params[0]), "{:<10.4g}".format(HL_params[1]), "{:<10.4g}".format(Tmin-273.15), "{:<10.4g}".format(Tmax-273.15))
                 #DFlabel_results["text"] ="Valid temperature range:\n %s°C - %s°C" % ("{:<10.4g}".format(Tmin-273.15), "{:<10.4g}".format(Tmax-273.15))
             except (ValueError, RuntimeError, OverflowError) as e:
-                DIYmessage("Error!", "Fitting has failed")
+                tk.messagebox.showerror("Error!", "Fitting has failed")
         else:
-            DIYmessage("Error!", "Invalid spherulite growth speed")
+            tk.messagebox.showerror("Error!", "Invalid spherulite growth speed")
     else:
-        DIYmessage("Error!", "Temperature too high, too low or invalid")
+        tk.messagebox.showerror("Error!", "Temperature too high, too low or invalid")
 
     
     
@@ -998,7 +991,7 @@ def browse():
         conversion_input = np.loadtxt(filename,skiprows=3)
         filename_out = filename[:-4]
     except (UnicodeDecodeError, ValueError) as e:
-        DIYmessage("Error!", "DSC file is invalid")
+        tk.messagebox.showerror("Error!", "DSC file is invalid")
         filename='no text'
         
     else:
@@ -1019,7 +1012,7 @@ def browse():
             try:
                 cr=float(cr_entry.get())
             except ValueError:
-                DIYmessage("Error!", "Cooling rate is invalid")
+                tk.messagebox.showerror("Error!", "Cooling rate is invalid")
                 filename='no text'
             else:
                 T_st = t_temp[0]
@@ -1049,7 +1042,7 @@ def browse():
                 cr = float(cr_entry.get())
                 T_st = float(Tst_entry.get())+273.15
             except ValueError:
-                DIYmessage("Error!", "Cooling rate or starting temperature is invalid")
+                tk.messagebox.showerror("Error!", "Cooling rate or starting temperature is invalid")
                 filename='no text'
             else:
                 tmaxC = percentage_seek(100.,conversion_input[:,0],conversion_input[:,1])
@@ -1140,9 +1133,9 @@ def plot_sph(file_name):
             frame2.update()
             return avgsph
         except OSError:
-            DIYmessage("Error!", "Spherulite distribution data not found!")
+            tk.messagebox.showerror("Error!", "Spherulite distribution data not found!")
     elif (file_name == 'no text')&isfirstrun:
-        DIYmessage("Error!", "Spherulite distribution data not found!")
+        tk.messagebox.showerror("Error!", "Spherulite distribution data not found!")
     
 def simulate(p0, G):
     global d_s, conversion_input, filename, filename_out
@@ -1328,22 +1321,22 @@ def simulate_start():
                                     simulate_aniso(parameter_szim, HL_params, T_start, cr)
                             isfirstrun=True
                         except IndexError:
-                            DIYmessage("Error!", "Input file is not a valid conversion curve")
+                            tk.messagebox.showerror("Error!", "Input file is not a valid conversion curve")
                             isfirstrun=True
                     else:
-                        DIYmessage("Error!", "Density or birthspeed of seeds is invalid")
+                        tk.messagebox.showerror("Error!", "Density or birthspeed of seeds is invalid")
                 else:
-                    DIYmessage("Error!", "Temperature, cooling rate or spherulite growth speed is invalid")
+                    tk.messagebox.showerror("Error!", "Temperature, cooling rate or spherulite growth speed is invalid")
             else:
-                DIYmessage("Error!", "Number of test points must be an integer")
+                tk.messagebox.showerror("Error!", "Number of test points must be an integer")
         else:
-            DIYmessage("Error!", "Number of test points is too high or too low")
+            tk.messagebox.showerror("Error!", "Number of test points is too high or too low")
             n_t=1e5
         
     else:
-        DIYmessage("Error!", "No conversion curve found")
+        tk.messagebox.showerror("Error!", "No conversion curve found")
     if (not isComplex)&(phantom_counter>1000):
-        DIYmessage("Warning!", "The list of simulated spherulites contains phantom spherulites.\nDue to this, the size and size distribution data may be inaccurate.")
+        tk.messagebox.showwarning("Warning!", "The list of simulated spherulites contains phantom spherulites.\nDue to this, the size and size distribution data may be inaccurate.")
     buttons.config(text="Simulate")
 
 
@@ -1513,7 +1506,7 @@ def complex_simulation(parameter_szim, G_temp, HLparams, T_start, cr):
                 simulate_aniso([rhoi_szim-1, F_szim-1], HLparams, T_start, cr)
     #text_area.configure(state='disabled')
     if phantom_counter>1000:
-        DIYmessage("Warning!", "The list of simulated spherulites contains phantom spherulites.\nDue to this, the size and size distribution data may be inaccurate.")
+        tk.messagebox.showwarning("Warning!", "The list of simulated spherulites contains phantom spherulites.\nDue to this, the size and size distribution data may be inaccurate.")
     n_t = n_t/10
     d_s = d_s*10
     
@@ -1563,9 +1556,9 @@ def smooth():
             isSmooth=True
             button_smooth.config(text="Done!")
         except (ValueError, RuntimeError, OverflowError) as e:
-            DIYmessage("Error!", "Unable to smooth out the curve")
+            tk.messagebox.showerror("Error!", "Unable to smooth out the curve")
     else:
-        DIYmessage("Error!", "No conversion curve found")
+        tk.messagebox.showerror("Error!", "No conversion curve found")
         
 def sim_mode(mooode):
     global n_t, d_s, frame, custom_nt, nt_entry
