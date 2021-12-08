@@ -20,7 +20,7 @@ from matplotlib.backends.backend_tkagg import (
 
 # append pcrystal2 dir to path, if not in the same directory
 # sys.path.append('')
-import pcrystal2, pcrystal2_mod
+import pcrystal2_mod
 
 
 from math import pi, exp
