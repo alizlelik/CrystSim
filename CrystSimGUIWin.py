@@ -629,7 +629,7 @@ def residual_array(params, t_exp, k_exp, G, plot = False, verbose = 1, min_vf = 
         frame1.destroy()
         frame1=tk.Frame(frame, bg="#ffffff", bd=5)
         frame1.place(relx=0.32, rely=0.15, relwidth=0.33, relheight=0.55, anchor="nw")
-        fig = Figure(figsize = (5, 5), dpi = 100) 
+        fig = plt.figure(figsize = (5, 5), dpi = 100) 
         plot1 = fig.add_subplot(111) 
         plot1.plot(t_exp[inds],k_exp[inds]/100,label = 'measured')
         plot1.plot(t_exp[inds],y,label = 'simulated')
@@ -819,7 +819,7 @@ def residual_array_aniso(params, t_exp, k_exp, T_start, coolingrate, HLparams, T
         frame1=tk.Frame(frame, bg="#ffffff", bd=5)
         frame1.place(relx=0.32, rely=0.15, relwidth=0.33, relheight=0.55, anchor="nw")
         
-        fig = Figure(figsize = (5, 5), dpi = 100) 
+        fig = plt.figure(figsize = (5, 5), dpi = 100) 
         plot1 = fig.add_subplot(111) 
         plot1.plot(t_exp[inds],k_exp[inds]/100,label = 'measured')
         plot1.plot(t_exp[inds],y,label = 'simulated')
