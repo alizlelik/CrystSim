@@ -80,16 +80,16 @@ def CreateToolTip(widget, text):
 
     
     
-""""def DIYmdestroy():
+"""def DIYmdestroy():
     global DIYmWindow, firstError
     
     DIYmWindow.grab_release()
     if firstError == True:
         if DIYmWindow.winfo_exists():
-            DIYmWindow.destroy()""""
+            DIYmWindow.destroy()"""
             
     
-""""def DIYmessage(titletext, text):
+"""def DIYmessage(titletext, text):
     global DIYmWindow, firstError
     
     if firstError == True:
@@ -107,7 +107,7 @@ def CreateToolTip(widget, text):
     DIYmlabel.place(relx=0.01, rely=0, relwidth=0.99, relheight=0.5)
     
     DIYmOKbutton = tk.Button(DIYmframe, text="OK", bg="#778899", font=("Times", 16), command=lambda: DIYmdestroy(), fg='black')
-    DIYmOKbutton.place(relx=0.375, rely=0.675, relwidth=0.25, relheight=0.25)""""
+    DIYmOKbutton.place(relx=0.375, rely=0.675, relwidth=0.25, relheight=0.25)"""
     
 
 
