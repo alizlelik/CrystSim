@@ -122,18 +122,16 @@ Making an executable:
 
 - jupyter nbconvert --to script CrystSimGUI.ipynb (create a .py script)
 
-Important note: make an environment with python 2.17.7. it's possible this works in Python3, but the GUI includes elements that are deprecated in 3.3.
-On the other hand, this has slightly reduced functionality compared to the GUI you get when running the script or using Linux(/WSL) (there a CrystSimGUIWin.py included which has workarounds for some of those problems)
+This should work with Anaconda in theory, but reality shows otherwise. best advised is to create a new user with only Python (works with 3.10.1) installed and install the necessary packages (numpy scipy matplotlib wheel pyqt5 pyinstaller pycairo cairocffi) with pip (and make sure that MinGW works and recompile the .f90 code)
 
+It is possible that PyQt will require a downgrade, ran into this issue when I tried with PyQt4 on Windows (later 5.15.6 worked) and PyQt5 as well in Linux (5.13.5 worked) to do that:
 
 - install pip, wheel and setuptools (you probably already have them, but in case not...)
 
-- download a wheel file for PyQt4 from here: https://www.lfd.uci.edu/~gohlke/pythonlibs/#pyqt4
+- download a wheel file for PyQt4/your desired version of PyQt5 from here: https://www.lfd.uci.edu/~gohlke/pythonlibs/#pyqt4
 	- for me, on a 64-bit Anaconda install PyQt4‑4.11.4‑cp27‑cp27m‑win_amd64.whl  was the version that worked
 	- pip install c:\Users\Your_User\Downloads\PyQt4‑4.11.4‑cp27‑cp27m‑win_amd64.whl (or whatever the path is for you)
 	- you may need to remove the PyQt5 you had before, this downgrade is necessary bc Python 2.7 and PyQt5 aren't compatible
 
-- download pyinstaller with conda install pyinstaller
-
 - pyinstaller --onefile CrystSimGUI.py
-	- your .exe will be in a dist folder. it's supposed to be fully portable
+	- your .exe will be in a dist folder. if you want to make it fully portable with the media files included, follow the instructions for doing this on Linux
