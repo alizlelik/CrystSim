@@ -1,19 +1,6 @@
 # CrystSim
 
-windows .exe executable: https://drive.google.com/file/d/1cKOnNwqtO5fDJ8S76J1EcSG7kXKKireo/view?usp=sharing
-
-install:
-
-    1.: install Anaconda (https://www.anaconda.com/products/individual#windows)
-    
-    2.: open Anaconda prompt and create a new environment with 'conda create --name myenv python=2.7.17 scipy matplotlib numpy'
-    
-    3.: put the .exe file in your C:\Users\Your_User\ folder
-    
-    4.: in Anaconda prompt: 'conda activate myenv', then '.\CrystSimGUI.exe'
-    
-run the program anytime with step 4
-
+windows .exe executable: https://drive.google.com/file/d/1vihMWkVK4HpgKhfaed75YVqpTTFych4Y/view?usp=sharing
 linux executable: https://drive.google.com/file/d/1l0d88YYUr8RH6KAl3xZrAbx4wBat7mzD/view?usp=sharing
 
 install:
